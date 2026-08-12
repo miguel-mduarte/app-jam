@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perda Zero Inteligente · Expoagas 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFEDE4;
+    --paper-card:#F8F7F2;
+    --ink:#1A1E1B;
+    --ink-soft:#565B52;
+    --clearance:#E8542A;
+    --fresh:#2F6B4F;
+    --tag-yellow:#F0B429;
+    --line:#C9C4B4;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:'Barlow Condensed',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    background:var(--ink);
+    color:var(--paper);
+    padding:22px 24px 20px;
+    position:relative;
+    border-bottom:4px solid var(--clearance);
+  }
+  .header-inner{max-width:1080px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{
+    width:40px;height:40px;background:var(--tag-yellow);
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%, 0 50%);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-family:'Barlow Condensed';font-weight:800;font-size:18px;
+  }
+  h1{font-size:30px;line-height:1;margin:0;letter-spacing:0.01em;}
+  .eyebrow{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tag-yellow);margin-bottom:4px;}
+  .event-tag{font-family:'IBM Plex Mono';font-size:12px;color:#C9C4B4;text-align:right;}
+
+  /* ---------- NAV (aisle signs) ---------- */
+  nav{background:var(--ink);border-top:1px solid #333831;}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;}
+  .nav-btn{
+    font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.06em;
+    color:#9A9F91;background:none;border:none;
+    padding:12px 20px;cursor:pointer;text-transform:uppercase;
+    border-bottom:3px solid transparent;
+  }
+  .nav-btn .n{color:var(--tag-yellow);margin-right:6px;}
+  .nav-btn.active{color:var(--paper);border-bottom-color:var(--clearance);}
+  .nav-btn:hover{color:var(--paper);}
+
+  main{max-width:1080px;margin:0 auto;padding:32px 24px 80px;}
+  .view{display:none;}
+  .view.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .view-title{font-size:34px;margin:0 0 4px;}
+  .view-sub{color:var(--ink-soft);font-size:14px;margin:0 0 4px;max-width:640px;}
+
+  .view-header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
+  .live-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--paper-card);border:1px solid var(--line);
+    padding:8px 14px;font-family:'IBM Plex Mono';font-size:12px;white-space:nowrap;
+  }
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--fresh);flex:none;
+    box-shadow:0 0 0 0 rgba(47,107,79,.5);animation:pulse 2s infinite;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(47,107,79,.45);}
+    70%{box-shadow:0 0 0 6px rgba(47,107,79,0);}
+    100%{box-shadow:0 0 0 0 rgba(47,107,79,0);}
+  }
+
+  /* ---------- STAT SUMMARY CARDS ---------- */
+  .stat-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  @media(max-width:760px){.stat-summary{grid-template-columns:1fr 1fr;}}
+  .stat-box{
+    background:var(--paper-card);border:1px solid var(--line);border-left:4px solid var(--line);
+    padding:16px 18px;display:flex;align-items:center;gap:14px;
+  }
+  .stat-box.critico{border-left-color:var(--clearance);}
+  .stat-box.atencao{border-left-color:var(--tag-yellow);}
+  .stat-box.ok{border-left-color:var(--fresh);}
+  .stat-box.total{border-left-color:var(--ink);}
+  .stat-icon{
+    width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:16px;background:var(--paper);border:1px solid var(--line);
+  }
+  .stat-box.critico .stat-icon{color:var(--clearance);}
+  .stat-box.atencao .stat-icon{color:var(--tag-yellow);}
+  .stat-box.ok .stat-icon{color:var(--fresh);}
+  .stat-box .stat-lbl-top{font-size:12px;color:var(--ink-soft);margin-bottom:2px;}
+  .stat-box .stat-num{font-family:'Barlow Condensed';font-weight:800;font-size:28px;line-height:1;}
+  .stat-box .stat-lbl-bottom{font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-soft);margin-top:2px;}
+
+  .section-head-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:16px 16px 0;}
+  .section-head-row h3{font-size:20px;margin:0;}
+  .section-head-row .sub{color:var(--ink-soft);font-size:13px;margin:2px 0 12px;}
+  .legend{display:flex;gap:16px;font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-soft);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .legend .dot{width:7px;height:7px;border-radius:50%;}
+  .dot-critico{background:var(--clearance);}
+  .dot-atencao{background:var(--tag-yellow);}
+  .dot-ok{background:var(--fresh);}
+
+  /* ---------- SCREEN 1: PAINEL ---------- */
+  .shelf{border:1px solid var(--line);background:var(--paper-card);}
+  .shelf-row{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 90px 130px 130px 170px;
+    gap:12px;align-items:center;
+    padding:14px 16px;border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .shelf-row.head{
+    font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--ink-soft);background:#E4E1D5;
+  }
+  .shelf-row:last-child{border-bottom:none;}
+  .prod-cell{display:flex;align-items:center;gap:10px;}
+  .prod-cell .thumb-sm{width:34px;height:34px;flex:none;background:var(--paper);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .prod-name{font-weight:600;display:block;}
+  .prod-id{display:block;font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-soft);font-weight:400;margin-top:1px;}
+  .cat-cell{font-size:13px;color:var(--ink-soft);}
+  .mono-cell{font-family:'IBM Plex Mono';font-size:13px;}
+  .venc-sub{display:block;font-family:'IBM Plex Mono';font-size:10px;color:var(--clearance);margin-top:2px;text-transform:uppercase;letter-spacing:.02em;}
+
+  .tag-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:0.04em;
+    padding:5px 10px 5px 16px;color:var(--paper-card);
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%);
+    position:relative;
+  }
+  .tag-badge::before{
+    content:"";position:absolute;left:5px;top:50%;transform:translateY(-50%);
+    width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.85);
+  }
+  .tag-critico{background:var(--clearance);}
+  .tag-atencao{background:var(--tag-yellow);color:var(--ink);}
+  .tag-atencao::before{background:rgba(0,0,0,.4);}
+  .tag-ok{background:var(--fresh);}
+
+  .btn{
+    font-family:'IBM Plex Mono';font-size:12px;text-transform:uppercase;letter-spacing:0.04em;
+    background:var(--ink);color:var(--paper);border:none;padding:9px 14px;cursor:pointer;
+  }
+  .btn:hover{background:var(--clearance);}
+  .btn:disabled{background:#D6D3C6;color:#9A9784;cursor:not-allowed;}
+  .btn-ghost{background:none;border:1px solid var(--ink);color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper);}
+
+  /* ---------- SCREEN 2: MATCH ---------- */
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:760px){.match-grid{grid-template-columns:1fr;}}
+  .card{background:var(--paper-card);border:1px solid var(--line);padding:20px;}
+  .card h3{font-family:'IBM Plex Mono';font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-soft);margin:0 0 14px;}
+  .product-picked{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .product-picked .thumb{width:44px;height:44px;background:var(--tag-yellow);flex:none;
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 20% 100%, 0 50%);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .client-row{
+    display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line);
+  }
+  .client-row:last-child{border-bottom:none;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--paper);
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-size:12px;flex:none;}
+  .affinity-bar{flex:1;height:6px;background:var(--line);position:relative;overflow:hidden;}
+  .affinity-fill{position:absolute;left:0;top:0;bottom:0;background:var(--fresh);}
+  .offer-box{
+    margin-top:16px;padding:16px;background:#fff;border:1px dashed var(--clearance);
+    font-family:'IBM Plex Mono';font-size:13px;line-height:1.6;
+  }
+  .offer-box .lbl{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--clearance);margin-bottom:6px;}
+
+  /* ---------- SCREEN 3: IMPACTO ---------- */
+  .impact-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;}
+  @media(max-width:760px){.impact-cols{grid-template-columns:1fr;}}
+  .stat-card{background:var(--paper-card);border:1px solid var(--line);padding:20px;}
+  .stat-card .num{font-family:'Barlow Condensed';font-weight:800;font-size:44px;line-height:1;}
+  .stat-card.bad .num{color:var(--clearance);}
+  .stat-card.good .num{color:var(--fresh);}
+  .stat-card .lbl{font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-top:8px;}
+
+  .receipt{
+    position:relative;background:#fff;padding:24px 24px 30px;max-width:420px;
+    font-family:'IBM Plex Mono';font-size:13px;line-height:1.9;
+    clip-path: polygon(0 0,100% 0,100% calc(100% - 10px),95% 100%,90% calc(100% - 10px),85% 100%,80% calc(100% - 10px),75% 100%,70% calc(100% - 10px),65% 100%,60% calc(100% - 10px),55% 100%,50% calc(100% - 10px),45% 100%,40% calc(100% - 10px),35% 100%,30% calc(100% - 10px),25% 100%,20% calc(100% - 10px),15% 100%,10% calc(100% - 10px),5% 100%,0 calc(100% - 10px));
+    box-shadow:0 2px 0 var(--line);
+  }
+  .receipt hr{border:none;border-top:1px dashed var(--ink-soft);margin:10px 0;}
+  .receipt .total{font-weight:600;font-size:15px;color:var(--fresh);}
+
+  /* ---------- FOOTER / EQUIPE ---------- */
+  footer{max-width:1080px;margin:0 auto;padding:0 24px 60px;}
+  .team-box{border:1px solid var(--line);background:var(--paper-card);padding:18px 20px;}
+  .team-box h4{font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:0 0 10px;}
+  .team-box ul{list-style:none;margin:0;padding:0;font-family:'IBM Plex Mono';font-size:13px;}
+  .team-box li{padding:4px 0;}
+  .team-box li span{color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">PZ</div>
+      <div>
+        <div class="eyebrow">AppJam · Expoagas 2026</div>
+        <h1 class="display">Perda Zero Inteligente</h1>
+      </div>
+    </div>
+    <div class="event-tag">
+      43ª Convenção Gaúcha de Supermercados<br>
+      Porto Alegre · RS
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nav-btn active" data-view="painel"><span class="n">01</span>Painel de Risco</button>
+    <button class="nav-btn" data-view="match"><span class="n">02</span>Match &amp; Oferta</button>
+    <button class="nav-btn" data-view="impacto"><span class="n">03</span>Impacto</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ===================== VIEW 1: PAINEL DE RISCO ===================== -->
+  <section id="view-painel" class="view active">
+    <div class="view-header-row">
+      <div>
+        <div class="eyebrow" style="color:var(--fresh);">Monitoramento de estoque</div>
+        <h2 class="view-title display">Painel de risco</h2>
+        <p class="view-sub">Acompanhe os produtos próximos do vencimento e transforme riscos em oportunidades.</p>
+      </div>
+      <div class="live-badge"><span class="live-dot"></span>Dados atualizados agora</div>
+    </div>
+
+    <div class="stat-summary">
+      <div class="stat-box critico">
+        <div class="stat-icon">!</div>
+        <div>
+          <div class="stat-lbl-top">Crítico</div>
+          <div class="stat-num" id="count-critico">0</div>
+          <div class="stat-lbl-bottom">Produtos urgentes</div>
+        </div>
+      </div>
+      <div class="stat-box atencao">
+        <div class="stat-icon">!</div>
+        <div>
+          <div class="stat-lbl-top">Atenção</div>
+          <div class="stat-num" id="count-atencao">0</div>
+          <div class="stat-lbl-bottom">Precisam de atenção</div>
+        </div>
+      </div>
+      <div class="stat-box ok">
+        <div class="stat-icon">✓</div>
+        <div>
+          <div class="stat-lbl-top">OK</div>
+          <div class="stat-num" id="count-ok">0</div>
+          <div class="stat-lbl-bottom">Estoque saudável</div>
+        </div>
+      </div>
+      <div class="stat-box total">
+        <div class="stat-icon">▤</div>
+        <div>
+          <div class="stat-lbl-top">Total de produtos</div>
+          <div class="stat-num" id="count-total">0</div>
+          <div class="stat-lbl-bottom">Itens monitorados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shelf">
+      <div class="section-head-row">
+        <div>
+          <h3 class="display" style="text-transform:none;letter-spacing:0;">Produtos monitorados</h3>
+          <div class="sub">Lista organizada por nível de urgência</div>
+        </div>
+        <div class="legend">
+          <span><span class="dot dot-critico"></span>Crítico</span>
+          <span><span class="dot dot-atencao"></span>Atenção</span>
+          <span><span class="dot dot-ok"></span>OK</span>
+        </div>
+      </div>
+      <div class="shelf-row head">
+        <div>Produto</div>
+        <div>Categoria</div>
+        <div>Estoque</div>
+        <div>Vencimento</div>
+        <div>Status</div>
+        <div>Ação</div>
+      </div>
+      <div id="shelf-body"></div>
+    </div>
+  </section>
+
+  <!-- ===================== VIEW 2: MATCH & OFERTA ===================== -->
+  <section id="view-match" class="view">
+    <h2 class="view-title display">Match &amp; oferta</h2>
+    <p class="view-sub">Cruzamos o produto em risco com os clientes que mais têm afinidade com aquela categoria, e geramos a oferta pronta.</p>
+
+    <div id="match-empty" class="card">
+      <h3>Nenhum produto selecionado</h3>
+      <p style="margin:0;color:var(--ink-soft);font-size:14px;">Volte ao Painel de Risco e clique em "Gerar oferta" em algum produto.</p>
+      <br>
+      <button class="btn btn-ghost" data-goto="painel">Ir para o painel</button>
+    </div>
+
+    <div id="match-content" style="display:none;">
+      <div class="match-grid">
+        <div class="card">
+          <h3>Produto em risco</h3>
+          <div class="product-picked">
+            <div class="thumb" id="match-prod-icon">🥛</div>
+            <div>
+              <div style="font-weight:600;" id="match-prod-name">—</div>
+              <div class="mono" style="font-size:12px;color:var(--ink-soft);" id="match-prod-meta">—</div>
+            </div>
+          </div>
+          <h3>Clientes com maior afinidade</h3>
+          <div id="client-list"></div>
+        </div>
+
+        <div class="card">
+          <h3>Oferta gerada</h3>
+          <div class="offer-box">
+            <span class="lbl">Mensagem sugerida</span>
+            <div id="offer-text">—</div>
+          </div>
+          <br>
+          <button class="btn" id="btn-ver-impacto">Ver impacto financeiro →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== VIEW 3: IMPACTO ===================== -->
+  <section id="view-impacto" class="view">
+    <h2 class="view-title display">Impacto financeiro</h2>
+    <p class="view-sub">Comparação entre não fazer nada, disparar um desconto genérico para todos, ou enviar a oferta personalizada gerada na tela anterior.</p>
+
+    <div class="impact-cols">
+      <div class="stat-card bad">
+        <div class="num" id="stat-perda">R$ 0</div>
+        <div class="lbl">Perda estimada se nada for feito</div>
+      </div>
+      <div class="stat-card good">
+        <div class="num" id="stat-recuperado">R$ 0</div>
+        <div class="lbl">Valor recuperado com oferta personalizada</div>
+      </div>
+    </div>
+
+    <div class="receipt">
+      <div class="eyebrow" style="color:var(--ink-soft);">CUPOM · SIMULAÇÃO DE IMPACTO</div>
+      <div id="receipt-product">Produto: —</div>
+      <hr>
+      <div>Oferta genérica p/ todos ...... <span id="receipt-generico">8%</span> conv.</div>
+      <div>Oferta personalizada ........... <span id="receipt-pessoal">—</span> conv.</div>
+      <hr>
+      <div class="total">GANHO DE CONVERSÃO: <span id="receipt-ganho">—</span></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="team-box">
+    <h4>Equipe · AppJam Expoagas 2026</h4>
+    <!-- TODO: preencher nome + email de cada integrante antes da entrega (requisito obrigatório) -->
+    <ul>
+      <li>Nome Integrante 1 — <span>email1@exemplo.com</span></li>
+      <li>Nome Integrante 2 — <span>email2@exemplo.com</span></li>
+      <li>Nome Integrante 3 — <span>email3@exemplo.com</span></li>
+      <li>Nome Integrante 4 — <span>email4@exemplo.com</span></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   MOCK DATA — editem à vontade, é só isso que alimenta o app
+   ========================================================= */
+const PRODUTOS = [
+  { id:1, nome:"Iogurte Natural 900g", categoria:"Laticínios", icone:"🥛", preco:8.90, estoque:34, diasVence:1 },
+  { id:2, nome:"Filé de Tilápia", categoria:"Peixaria", icone:"🐟", preco:24.90, estoque:12, diasVence:1 },
+  { id:3, nome:"Morango 300g", categoria:"Hortifruti", icone:"🍓", preco:6.50, estoque:40, diasVence:2 },
+  { id:4, nome:"Pão de Forma Integral", categoria:"Padaria", icone:"🍞", preco:9.20, estoque:18, diasVence:2 },
+  { id:5, nome:"Queijo Minas Frescal", categoria:"Laticínios", icone:"🧀", preco:14.50, estoque:22, diasVence:3 },
+  { id:6, nome:"Alface Crespa", categoria:"Hortifruti", icone:"🥬", preco:3.20, estoque:26, diasVence:3 },
+  { id:7, nome:"Café Torrado 500g", categoria:"Mercearia", icone:"☕", preco:16.90, estoque:60, diasVence:120 },
+  { id:8, nome:"Arroz Tipo 1 5kg", categoria:"Mercearia", icone:"🍚", preco:22.00, estoque:75, diasVence:200 },
+  { id:9, nome:"Frango Resfriado kg", categoria:"Açougue", icone:"🍗", preco:12.90, estoque:15, diasVence:4 },
+  { id:10, nome:"Banana Prata kg", categoria:"Hortifruti", icone:"🍌", preco:4.10, estoque:50, diasVence:4 },
+  { id:11, nome:"Leite Integral 1L", categoria:"Laticínios", icone:"🥛", preco:5.30, estoque:48, diasVence:6 },
+  { id:12, nome:"Detergente 500ml", categoria:"Limpeza", icone:"🧴", preco:2.80, estoque:90, diasVence:365 },
+];
+
+const CLIENTES = [
+  { id:1, nome:"Marcia Souza", categoriasFreq:["Laticínios","Padaria"], frequenciaSemana:3 },
+  { id:2, nome:"João Pedro Lima", categoriasFreq:["Açougue","Peixaria"], frequenciaSemana:2 },
+  { id:3, nome:"Beatriz Nunes", categoriasFreq:["Hortifruti","Laticínios"], frequenciaSemana:4 },
+  { id:4, nome:"Carlos Eduardo", categoriasFreq:["Mercearia","Limpeza"], frequenciaSemana:1 },
+  { id:5, nome:"Fernanda Alves", categoriasFreq:["Hortifruti","Padaria"], frequenciaSemana:3 },
+  { id:6, nome:"Rodrigo Tavares", categoriasFreq:["Peixaria","Hortifruti"], frequenciaSemana:2 },
+];
+
+/* =========================================================
+   REGRAS (podem refinar depois — hoje são regras simples)
+   ========================================================= */
+function statusDoProduto(p){
+  if(p.diasVence <= 1) return "critico";
+  if(p.diasVence <= 3) return "atencao";
+  if(p.diasVence <= 6) return "ok-baixo"; // ainda ok, mas monitorar
+  return "ok";
+}
+
+function descontoSugerido(diasVence){
+  if(diasVence <= 1) return 35;
+  if(diasVence <= 2) return 25;
+  if(diasVence <= 3) return 15;
+  if(diasVence <= 6) return 8;
+  return 0;
+}
+
+function afinidade(cliente, produto){
+  // afinidade simples: cliente que compra a categoria do produto tem afinidade alta
+  let score = cliente.categoriasFreq.includes(produto.categoria) ? 60 : 15;
+  score += cliente.frequenciaSemana * 8; // cliente mais frequente = mais fácil de converter
+  return Math.min(score, 96);
+}
+
+function clientesRankeados(produto){
+  return CLIENTES
+    .map(c => ({ ...c, score: afinidade(c, produto) }))
+    .sort((a,b) => b.score - a.score)
+    .slice(0,4);
+}
+
+function textoOferta(cliente, produto, desconto){
+  return `Oi ${cliente.nome.split(" ")[0]}! Separamos ${produto.nome} com ${desconto}% OFF especial pra você hoje, só até o fim do dia. Aproveita antes que acabe 😉`;
+}
+
+/* =========================================================
+   RENDER — TELA 1
+   ========================================================= */
+const shelfBody = document.getElementById("shelf-body");
+
+function labelStatus(s){
+  return { critico:"Crítico", atencao:"Atenção", "ok-baixo":"Monitorar", ok:"OK" }[s];
+}
+function classeStatus(s){
+  return { critico:"tag-critico", atencao:"tag-atencao", "ok-baixo":"tag-ok", ok:"tag-ok" }[s];
+}
+
+function idFormatado(id){
+  return "Produto #" + String(id).padStart(3,"0");
+}
+
+function renderShelf(){
+  const ordenado = [...PRODUTOS].sort((a,b)=> a.diasVence - b.diasVence);
+
+  // cards de resumo
+  const contagem = { critico:0, atencao:0, "ok-baixo":0, ok:0 };
+  PRODUTOS.forEach(p => contagem[statusDoProduto(p)]++);
+  document.getElementById("count-critico").textContent = contagem.critico;
+  document.getElementById("count-atencao").textContent = contagem.atencao;
+  document.getElementById("count-ok").textContent = contagem["ok-baixo"] + contagem.ok;
+  document.getElementById("count-total").textContent = PRODUTOS.length;
+
+  shelfBody.innerHTML = ordenado.map(p => {
+    const status = statusDoProduto(p);
+    const podeGerarOferta = status === "critico" || status === "atencao";
+    const vencSub = status === "critico" ? "Vencimento iminente" : (status === "atencao" ? "Vence em breve" : "");
+    return `
+      <div class="shelf-row">
+        <div class="prod-cell">
+          <div class="thumb-sm">${p.icone}</div>
+          <div>
+            <span class="prod-name">${p.nome}</span>
+            <span class="prod-id">${idFormatado(p.id)}</span>
+          </div>
+        </div>
+        <div class="cat-cell">${p.categoria}</div>
+        <div class="mono-cell">${p.estoque} un.</div>
+        <div class="mono-cell" style="color:${status==='critico'?'var(--clearance)':'var(--ink)'};">
+          ${p.diasVence <= 1 ? "1 dia" : p.diasVence + " dias"}
+          ${vencSub ? `<span class="venc-sub">${vencSub}</span>` : ""}
+        </div>
+        <div><span class="tag-badge ${classeStatus(status)}">${labelStatus(status)}</span></div>
+        <div>
+          <button class="btn" ${podeGerarOferta ? "" : "disabled"} data-gerar="${p.id}">
+            ${podeGerarOferta ? "Gerar oferta personalizada" : "Sem ação"}
+          </button>
+        </div>
+      </div>`;
+  }).join("");
+
+  shelfBody.querySelectorAll("[data-gerar]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = parseInt(btn.dataset.gerar);
+      abrirMatch(id);
+    });
+  });
+}
+
+/* =========================================================
+   RENDER — TELA 2
+   ========================================================= */
+let produtoSelecionado = null;
+
+function abrirMatch(produtoId){
+  produtoSelecionado = PRODUTOS.find(p => p.id === produtoId);
+  irPara("match");
+  renderMatch();
+}
+
+function renderMatch(){
+  const empty = document.getElementById("match-empty");
+  const content = document.getElementById("match-content");
+
+  if(!produtoSelecionado){
+    empty.style.display = "block";
+    content.style.display = "none";
+    return;
+  }
+  empty.style.display = "none";
+  content.style.display = "block";
+
+  const desconto = descontoSugerido(produtoSelecionado.diasVence);
+  document.getElementById("match-prod-icon").textContent = produtoSelecionado.icone;
+  document.getElementById("match-prod-name").textContent = produtoSelecionado.nome;
+  document.getElementById("match-prod-meta").textContent =
+    `Vence em ${produtoSelecionado.diasVence} dia(s) · desconto sugerido ${desconto}%`;
+
+  const ranking = clientesRankeados(produtoSelecionado);
+  document.getElementById("client-list").innerHTML = ranking.map(c => `
+    <div class="client-row">
+      <div class="avatar">${c.nome.split(" ").map(n=>n[0]).slice(0,2).join("")}</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:600;">${c.nome}</div>
+        <div class="affinity-bar"><div class="affinity-fill" style="width:${c.score}%;"></div></div>
+      </div>
+      <div class="mono" style="font-size:12px;color:var(--ink-soft);">${c.score}%</div>
+    </div>
+  `).join("");
+
+  const melhorCliente = ranking[0];
+  document.getElementById("offer-text").textContent = textoOferta(melhorCliente, produtoSelecionado, desconto);
+
+  window._simImpacto = { produto: produtoSelecionado, desconto, melhorCliente };
+}
+
+document.getElementById("btn-ver-impacto").addEventListener("click", ()=>{
+  irPara("impacto");
+  renderImpacto();
+});
+
+/* =========================================================
+   RENDER — TELA 3
+   ========================================================= */
+function renderImpacto(){
+  if(!window._simImpacto) return;
+  const { produto, desconto, melhorCliente } = window._simImpacto;
+
+  const perda = produto.preco * produto.estoque;
+  const conversaoGenerica = 8; // % — média de conversão de oferta em massa
+  const conversaoPersonalizada = Math.min(8 + Math.round(melhorCliente.score * 0.4), 68);
+  const recuperado = perda * (conversaoPersonalizada/100);
+
+  document.getElementById("stat-perda").textContent = "R$ " + perda.toFixed(2).replace(".",",");
+  document.getElementById("stat-recuperado").textContent = "R$ " + recuperado.toFixed(2).replace(".",",");
+
+  document.getElementById("receipt-product").textContent = `Produto: ${produto.nome}`;
+  document.getElementById("receipt-generico").textContent = conversaoGenerica + "%";
+  document.getElementById("receipt-pessoal").textContent = conversaoPersonalizada + "%";
+  document.getElementById("receipt-ganho").textContent = "+" + (conversaoPersonalizada - conversaoGenerica) + " p.p.";
+}
+
+/* =========================================================
+   NAVEGAÇÃO ENTRE TELAS
+   ========================================================= */
+function irPara(view){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById("view-"+view).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active", b.dataset.view === view));
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=> irPara(btn.dataset.view));
+});
+document.querySelectorAll("[data-goto]").forEach(btn=>{
+  btn.addEventListener("click", ()=> irPara(btn.dataset.goto));
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+renderShelf();
+renderMatch(); // mostra o estado vazio
+</script>
+
+</body>
+</html>
