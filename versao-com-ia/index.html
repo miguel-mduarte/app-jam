@@ -395,6 +395,11 @@
 
 <script>
 /* =========================================================
+   INCREMENTO: CHAVE DA API GEMINI
+   ========================================================= */
+const API_KEY = 'AQ.Ab8RN6IVkvxITNWUyvkviHXP0VJ5QxwLy0_IR7RJAEDkrOEAAA'; 
+
+/* =========================================================
    MOCK DATA — editem à vontade, é só isso que alimenta o app
    ========================================================= */
 const PRODUTOS = [
@@ -455,6 +460,36 @@ function clientesRankeados(produto){
 
 function textoOferta(cliente, produto, desconto){
   return `Oi ${cliente.nome.split(" ")[0]}! Separamos ${produto.nome} com ${desconto}% OFF especial pra você hoje, só até o fim do dia. Aproveita antes que acabe 😉`;
+}
+
+/* =========================================================
+   INCREMENTO: FUNÇÃO ASSÍNCRONA PARA A IA
+   ========================================================= */
+async function gerarTextoOfertaIA(cliente, produto, desconto) {
+  const promptText = `Atue como um assistente de marketing de supermercado. 
+  Escreva uma mensagem curta (máximo de 3 linhas), amigável e persuasiva para a cliente ${cliente.nome}. 
+  Ofereça um desconto especial de ${desconto}% no produto ${produto.nome}. 
+  Crie um senso de urgência dizendo que é só até o fim do dia. Não use saudações formais demais.`;
+
+ 
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${API_KEY}`;
+
+  const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }]
+      })
+  });
+
+  if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error("Detalhes do erro do Google:", errorDetails);
+      throw new Error(`Falha na API: ${response.status}`);
+  }
+  
+  const data = await response.json();
+  return data.candidates[0].content.parts[0].text;
 }
 
 /* =========================================================
@@ -561,8 +596,25 @@ function renderMatch(){
     </div>
   `).join("");
 
+  /* =========================================================
+     INCREMENTO: ATUALIZAÇÃO DA CHAMADA DE TEXTO
+     ========================================================= */
   const melhorCliente = ranking[0];
-  document.getElementById("offer-text").textContent = textoOferta(melhorCliente, produtoSelecionado, desconto);
+  const elementoTextoOferta = document.getElementById("offer-text");
+  
+  // Feedback visual enquanto gera
+  elementoTextoOferta.textContent = "Gerando oferta personalizada ...";
+
+  // Tentativa de gerar com a IA
+  gerarTextoOfertaIA(melhorCliente, produtoSelecionado, desconto)
+    .then(textoGerado => {
+      elementoTextoOferta.textContent = textoGerado.trim();
+    })
+    .catch(erro => {
+      // Se falhar (ex: API_KEY inválida), volta para o texto mockado original
+      console.warn("Erro ao gerar com IA, usando texto padrão.", erro);
+      elementoTextoOferta.textContent = textoOferta(melhorCliente, produtoSelecionado, desconto);
+    });
 
   window._simImpacto = { produto: produtoSelecionado, desconto, melhorCliente };
 }
